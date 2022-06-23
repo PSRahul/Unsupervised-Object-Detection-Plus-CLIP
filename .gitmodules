@@ -1,0 +1,6 @@
+[submodule "CLIP"]
+	path = CLIP
+	url = git@github.com:PSRahul/CLIP.git
+[submodule "TokenCut"]
+	path = TokenCut
+	url = git@github.com:PSRahul/TokenCut.git
