@@ -1,6 +1,6 @@
 import os
 
-image_root_path = "/home/psrahul/MasterThesis/datasets/CUB_200_2011/CUB_200_2011/train/CUB_200_2011/"
+image_root_path = "/home/psrahul/MasterThesis/datasets/CUB_200_2011/CUB_200_2011/val/"
 class_names = sorted(os.listdir(image_root_path))
 counter = 1
 with open('images.txt', 'w') as f:
