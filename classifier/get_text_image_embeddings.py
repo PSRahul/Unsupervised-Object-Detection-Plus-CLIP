@@ -1,15 +1,13 @@
 # %%
-from curses import beep
-from fileinput import filename
 from clip import tokenize
 import numpy as np
 import torch
 import os
 from PIL import Image
 from clip import available_models
+import sys
 import clip
 # %%
-import sys
 
 
 def get_unique_encodings(class_name_list):
