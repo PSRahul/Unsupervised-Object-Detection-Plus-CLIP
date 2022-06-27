@@ -1,4 +1,7 @@
 datasets/
+classifier/outputs/clip_encodings
+bounding_box_regression/outputs/TokenCut
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
