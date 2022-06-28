@@ -1,4 +1,4 @@
-utils/data_utils/CUB_200_2011/text_gen/image_features/
+utils/data_utils/CUB_200_2011/image_features/
 datasets/
 classifier/outputs/clip_encodings
 bounding_box_regression/outputs/TokenCut
@@ -132,3 +132,7 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+utils/data_utils/CUB_200_2011/image_features/image_feature_cropped.pt
+utils/data_utils/CUB_200_2011/image_features/image_feature_full.pt
+utils/data_utils/CUB_200_2011/image_features/processed_images_cropped.pt
+utils/data_utils/CUB_200_2011/image_features/processed_images.pt

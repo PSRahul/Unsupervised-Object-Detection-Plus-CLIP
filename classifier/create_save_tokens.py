@@ -1,5 +1,5 @@
 # %%
-from json import load
+
 from clip import tokenize
 import numpy as np
 import torch
@@ -144,6 +144,7 @@ def create_token_images_with_bounding_boxes():
 
     image_input = torch.tensor(np.stack(image_list)).cuda()
 
+    sys.exit(0)
     torch.save(image_input, "/home/psrahul/MasterThesis/repo/Unsupervised-Object-Detection-Plus-CLIP/CLIP/encodings/processed_images_cropped.pt")
 
 
@@ -153,17 +154,17 @@ def create_token_images_with_bounding_boxes():
 # get_text_features()
 # get_image_features()
 
-def get_text_token_from_desc_list(load_name, save_name, file_root="/home/psrahul/MasterThesis/repo/Unsupervised-Object-Detection-Plus-CLIP/utils/data_utils/CUB_200_2011/text_gen/text_encodings/"):
+def get_text_token_from_desc_list(load_name, save_name, file_root="/home/psrahul/MasterThesis/repo/Unsupervised-Object-Detection-Plus-CLIP/utils/data_utils/CUB_200_2011/text_gen/text_tokens/"):
 
     class_token_list = []
 
     desc_list = torch.load(os.path.join(file_root, load_name))
-
+    print(desc_list[8])
+    return 0
     for desc in desc_list:
         class_token_list.append(
             tokenize(str(desc)).numpy().ravel())
 
-    print(class_token_list)
     class_token_list = np.array(class_token_list)
     text_tokens = torch.from_numpy(class_token_list)
 
