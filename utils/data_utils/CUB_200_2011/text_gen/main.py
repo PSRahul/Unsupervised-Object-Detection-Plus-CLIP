@@ -1,11 +1,14 @@
+import re
 import pandas as pd
 import numpy as np
 import torch
 import os
 
+import sys
+
 
 class DescGenerator():
-    def __init__(self) -> None:
+    def __init__(self, filter=True) -> None:
 
         attribute_definitions = "/home/psrahul/MasterThesis/datasets/CUB_200_2011/attributes.txt"
         attribute_certainities = "/home/psrahul/MasterThesis/datasets/CUB_200_2011/CUB_200_2011/attributes/certainties.txt"
@@ -29,16 +32,45 @@ class DescGenerator():
         self.class_attribute_labels = pd.read_csv(
             class_attribute_labels, sep=" ", header=None)
 
+        self.filter = filter
+
+    def filter_attributes(self):
+        keep_filters = []
+        # print(self.attributes)
+        # We choose Wing Color, Eye Color, Primary color, Leg Color, Bill Color
+        # Wing Color - 9 - 24
+        # Eye Color - 135 - 150
+        # Primary Color - 248 - 263
+        # Leg Color - 263 - 278
+        # Bill Color - 278 - 293
+
+        keep_filters.append([int(x)
+                             for x in np.arange(9, 24)])
+        keep_filters.append([int(x)
+                             for x in np.arange(135, 149)])
+        keep_filters.append([int(x)
+                             for x in np.arange(248, 293)])
+        keep_filters = [x for xs in keep_filters for x in xs]
+
+        self.class_attribute_labels = self.class_attribute_labels.iloc[:, keep_filters]
+        self.attributes = self.attributes.iloc[keep_filters, :]
+
     def process(self):
+        if(self.filter):
+            self.filter_attributes()
+        self.attribute_series_t15_list = []
         self.attribute_series_t5_list = []
         self.attribute_series_t3_list = []
         self.attribute_series_t1_list = []
         for idx in range(200):
             class_series = self.class_attribute_labels.iloc[idx].sort_values(
                 ascending=False).keys()
+            attribute_series_t15 = class_series[0:15]
             attribute_series_t5 = class_series[0:5]
             attribute_series_t3 = class_series[0:3]
             attribute_series_t1 = class_series[0]
+            self.attribute_series_t15_list.append(
+                np.array(attribute_series_t15))
             self.attribute_series_t5_list.append(
                 np.array(attribute_series_t5))
             self.attribute_series_t3_list.append(
@@ -61,15 +93,19 @@ class DescGenerator():
         for idx in range(200):
             index_text = []
             # print(attrib_list)
+            print(self.attributes.index)
             for attribute in list(attrib_list[idx].ravel()):
-                # print(attribute)
+
+                print(attribute)
                 # print(self.attributes.iloc[int(attribute)])
-                index_text.append(self.attributes.iloc[int(attribute)][1])
+                index_text.append(self.attributes[int(attribute), 1])
             self.attribute_series_text.append(index_text)
 
         return self.attribute_series_text
 
     def get_class_text(self):
+        self.attribute_series_t15_text = self.get_index_class_list(
+            self.attribute_series_t15_list)
         self.attribute_series_t5_text = self.get_index_class_list(
             self.attribute_series_t5_list)
         self.attribute_series_t3_text = self.get_index_class_list(
@@ -83,7 +119,7 @@ class DescGenerator():
             desc_str += str(each_str) + ". "
         return desc_str
 
-    def make_sentences(self, attribute_series_tk_text, save_str, save_root="/home/psrahul/MasterThesis/repo/Unsupervised-Object-Detection-Plus-CLIP/utils/data_utils/CUB_200_2011/text_gen/text_encodings/"):
+    def make_sentences(self, attribute_series_tk_text, save_str, save_root="/home/psrahul/MasterThesis/repo/Unsupervised-Object-Detection-Plus-CLIP/utils/data_utils/CUB_200_2011/text_gen/text_tokens_v2/", filter=True):
         class_texts = []
         class_texts_with_desc = []
         for idx in range(200):
@@ -113,6 +149,8 @@ def main():
     descgenerator = DescGenerator()
     descgenerator.process()
     descgenerator.get_class_text()
+    descgenerator.make_sentences(
+        descgenerator.attribute_series_t15_text, save_str="t15_text.pt")
     descgenerator.make_sentences(
         descgenerator.attribute_series_t5_text, save_str="t5_text.pt")
     descgenerator.make_sentences(
