@@ -1,15 +1,14 @@
 # %%
-from curses import beep
-from fileinput import filename
+
 from clip import tokenize
 import numpy as np
 import torch
 import os
 from PIL import Image
 from clip import available_models
+import sys
 import clip
 # %%
-import sys
 
 
 def get_unique_encodings(class_name_list):
@@ -26,7 +25,7 @@ def get_unique_encodings(class_name_list):
 # %%
 
 
-def create_token_images():
+def create_token_images_from_classes_files():
     class_names_txt = "/home/psrahul/MasterThesis/datasets/CUB_200_2011/CUB_200_2011/classes.txt"
     class_name_list = []
     class_token_list = []
@@ -67,7 +66,7 @@ def create_token_images():
 # create_token_images()
 
 
-def get_text_features():
+def get_text_features(root):
     text_tokens = torch.load(
         "/home/psrahul/MasterThesis/repo/Unsupervised-Object-Detection-Plus-CLIP/CLIP/encodings/text_tokens_cropped.pt")
 
@@ -145,11 +144,38 @@ def create_token_images_with_bounding_boxes():
 
     image_input = torch.tensor(np.stack(image_list)).cuda()
 
+    sys.exit(0)
     torch.save(image_input, "/home/psrahul/MasterThesis/repo/Unsupervised-Object-Detection-Plus-CLIP/CLIP/encodings/processed_images_cropped.pt")
 
 
 # create_token_images_with_bounding_boxes()
 
-create_token_images_with_bounding_boxes()
-get_text_features()
-get_image_features()
+# create_token_images_with_bounding_boxes()
+# get_text_features()
+# get_image_features()
+
+def get_text_token_from_desc_list(load_name, save_name, file_root="/home/psrahul/MasterThesis/repo/Unsupervised-Object-Detection-Plus-CLIP/utils/data_utils/CUB_200_2011/text_gen/text_tokens/"):
+
+    class_token_list = []
+
+    desc_list = torch.load(os.path.join(file_root, load_name))
+    print(desc_list[8])
+    return 0
+    for desc in desc_list:
+        class_token_list.append(
+            tokenize(str(desc)).numpy().ravel())
+
+    class_token_list = np.array(class_token_list)
+    text_tokens = torch.from_numpy(class_token_list)
+
+    torch.save(text_tokens, os.path.join(file_root, save_name))
+
+
+get_text_token_from_desc_list(
+    load_name="just_class_names.pt", save_name="text_token_just_class_names.pt")
+get_text_token_from_desc_list(
+    load_name="t5_text.pt", save_name="text_token_t5_text.pt")
+get_text_token_from_desc_list(
+    load_name="t3_text.pt", save_name="text_token_t3_text.pt")
+get_text_token_from_desc_list(
+    load_name="t1_text.pt", save_name="text_token_t1_text.pt")
