@@ -154,13 +154,11 @@ def create_token_images_with_bounding_boxes():
 # get_text_features()
 # get_image_features()
 
-def get_text_token_from_desc_list(load_name, save_name, file_root="/home/psrahul/MasterThesis/repo/Unsupervised-Object-Detection-Plus-CLIP/utils/data_utils/CUB_200_2011/text_gen/text_tokens/"):
+def get_text_token_from_desc_list(load_name, save_name, load_file_root="/home/psrahul/MasterThesis/repo/Unsupervised-Object-Detection-Plus-CLIP/utils/data_utils/CUB_200_2011/text_gen/text_tokens_v2/", save_file_root="/home/psrahul/MasterThesis/repo/Unsupervised-Object-Detection-Plus-CLIP/utils/data_utils/CUB_200_2011/text_gen/text_tokens_v2/"):
 
     class_token_list = []
 
-    desc_list = torch.load(os.path.join(file_root, load_name))
-    print(desc_list[8])
-    return 0
+    desc_list = torch.load(os.path.join(load_file_root, load_name))
     for desc in desc_list:
         class_token_list.append(
             tokenize(str(desc)).numpy().ravel())
@@ -168,7 +166,7 @@ def get_text_token_from_desc_list(load_name, save_name, file_root="/home/psrahul
     class_token_list = np.array(class_token_list)
     text_tokens = torch.from_numpy(class_token_list)
 
-    torch.save(text_tokens, os.path.join(file_root, save_name))
+    torch.save(text_tokens, os.path.join(save_file_root, save_name))
 
 
 get_text_token_from_desc_list(

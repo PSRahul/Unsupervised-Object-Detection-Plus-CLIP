@@ -10,7 +10,7 @@ import sys
 import clip
 
 
-def get_text_features(load_name, save_name, file_root="/home/psrahul/MasterThesis/repo/Unsupervised-Object-Detection-Plus-CLIP/utils/data_utils/CUB_200_2011/text_gen/text_tokens/"):
+def get_text_features(load_name, save_name, file_root="/home/psrahul/MasterThesis/repo/Unsupervised-Object-Detection-Plus-CLIP/utils/data_utils/CUB_200_2011/text_gen/text_tokens_v2/"):
 
     text_tokens = torch.load(os.path.join(file_root, load_name))
 
