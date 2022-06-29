@@ -146,6 +146,7 @@ class DescGenerator():
             desc_text = self.convert_list_to_str(desc_text)
             class_texts_with_desc.append(desc_text)
             print(desc_text)
+            return
         torch.save(class_texts, os.path.join(save_root, "just_class_names.pt"))
         torch.save(class_texts_with_desc, os.path.join(save_root, save_str))
 
