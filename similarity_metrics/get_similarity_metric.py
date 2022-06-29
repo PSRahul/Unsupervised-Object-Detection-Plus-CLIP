@@ -8,9 +8,10 @@ from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay, multilabel
 
 
 class GetSimilarity():
-    def __init__(self, query_feature_path, support_feature_path):
+    def __init__(self, query_feature_path, support_feature_path, target_image_labels_txt):
         self.support_features = torch.load(support_feature_path)
         self.query_features = torch.load(query_feature_path)
+        self.target_image_labels_txt = target_image_labels_txt
 
     def get_predictions(self):
         self.support_features /= self.support_features.norm(
@@ -24,9 +25,7 @@ class GetSimilarity():
 
     def get_targets(self):
 
-        query_label_txt = "/home/psrahul/MasterThesis/repo/Unsupervised-Object-Detection-Plus-CLIP/utils/data_utils/CUB_200_2011/data_splits/test/image_class_labels.txt"
-
-        file = open(query_label_txt, 'r')
+        file = open(self.target_image_labels_txt, 'r')
         file_Lines = file.readlines()
 
         target_labels = []
@@ -37,33 +36,56 @@ class GetSimilarity():
 
         self.targets = np.array(target_labels)
 
-    def get_accuracy_score(self):
+    def get_metrics(self):
         self.get_predictions()
         self.get_targets()
         print("Accuracy {0:.2f}".format(accuracy_score(
             self.targets, self.predictions) * 100))
-
-    def get_f1_score(self):
-        self.get_predictions()
-        self.get_targets()
         print("F1 Score {0:.2f}".format(
             f1_score(self.targets, self.predictions, average="macro") * 100))
 
 
-support_feature_path = "//home/psrahul/MasterThesis/repo/Unsupervised-Object-Detection-Plus-CLIP/utils/data_utils/CUB_200_2011/text_features_v2/" + \
-    "text_feature_just_class_names.pt"
-#   "text_feature_just_class_names.pt"
-# "text_feature_t5_text.pt"
-# "text_feature_t3_text.pt"
-# "text_feature_t1_text.pt"
+def text_image_similarity():
+    support_feature_path = "//home/psrahul/MasterThesis/repo/Unsupervised-Object-Detection-Plus-CLIP/utils/data_utils/CUB_200_2011/text_features_v2/" + \
+        "text_feature_just_class_names.pt"
+    #   "text_feature_just_class_names.pt"
+    # "text_feature_t5_text.pt"
+    # "text_feature_t3_text.pt"
+    # "text_feature_t1_text.pt"
 
-query_feature_path = "/home/psrahul/MasterThesis/repo/Unsupervised-Object-Detection-Plus-CLIP/utils/data_utils/CUB_200_2011/image_features/" + \
-    "image_feature_cropped.pt"
-# "query_feature_full.pt"
-# "query_feature_cropped.pt"
+    query_feature_path = "/home/psrahul/MasterThesis/repo/Unsupervised-Object-Detection-Plus-CLIP/utils/data_utils/CUB_200_2011/image_features/" + \
+        "image_feature_cropped.pt"
+    # "query_feature_full.pt"
+    # "query_feature_cropped.pt"
 
-get_similarity = GetSimilarity(support_feature_path=support_feature_path,
-                               query_feature_path=query_feature_path)
+    target_image_labels_txt = "/home/psrahul/MasterThesis/repo/Unsupervised-Object-Detection-Plus-CLIP/utils/data_utils/CUB_200_2011/data_splits/test/image_class_labels.txt"
 
-get_similarity.get_accuracy_score()
-get_similarity.get_f1_score()
+    get_similarity = GetSimilarity(support_feature_path=support_feature_path,
+                                   query_feature_path=query_feature_path,
+                                   target_image_labels_txt=target_image_labels_txt)
+
+    get_similarity.get_metrics()
+
+
+def image_image_similarity():
+    support_feature_path = "/home/psrahul/MasterThesis/repo/Unsupervised-Object-Detection-Plus-CLIP/utils/data_utils/CUB_200_2011/image_features/support_image_features/" + \
+        "support_features_k_1"
+
+    query_feature_path = "/home/psrahul/MasterThesis/repo/Unsupervised-Object-Detection-Plus-CLIP/utils/data_utils/CUB_200_2011/image_features/test_image_features/" + \
+        "image_feature_full.pt"
+
+    target_image_labels_txt = "/home/psrahul/MasterThesis/repo/Unsupervised-Object-Detection-Plus-CLIP/utils/data_utils/CUB_200_2011/data_splits/test/image_class_labels.txt"
+
+    get_similarity = GetSimilarity(support_feature_path=support_feature_path,
+                                   query_feature_path=query_feature_path,
+                                   target_image_labels_txt=target_image_labels_txt)
+
+    get_similarity.get_metrics()
+
+
+def main():
+    image_image_similarity()
+
+
+if __name__ == '__main__':
+    sys.exit(main())
