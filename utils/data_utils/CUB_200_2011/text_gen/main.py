@@ -89,29 +89,28 @@ class DescGenerator():
 
     def get_index_class_list(self, attrib_list):
         self.attribute_series_text = []
-
         for idx in range(200):
             index_text = []
-            # print(attrib_list)
-            print(self.attributes.index)
             for attribute in list(attrib_list[idx].ravel()):
-
-                print(attribute)
-                # print(self.attributes.iloc[int(attribute)])
-                index_text.append(self.attributes[int(attribute), 1])
+                index_text.append(self.attributes.loc[attribute, 1])
             self.attribute_series_text.append(index_text)
 
         return self.attribute_series_text
 
     def get_class_text(self):
-        self.attribute_series_t15_text = self.get_index_class_list(
-            self.attribute_series_t15_list)
-        self.attribute_series_t5_text = self.get_index_class_list(
-            self.attribute_series_t5_list)
-        self.attribute_series_t3_text = self.get_index_class_list(
-            self.attribute_series_t3_list)
+
         self.attribute_series_t1_text = self.get_index_class_list(
             self.attribute_series_t1_list)
+        print("attribute_series_t1_text generated")
+        self.attribute_series_t15_text = self.get_index_class_list(
+            self.attribute_series_t15_list)
+        print("attribute_series_t15_text generated")
+        self.attribute_series_t5_text = self.get_index_class_list(
+            self.attribute_series_t5_list)
+        print("attribute_series_t5_text generated")
+        self.attribute_series_t3_text = self.get_index_class_list(
+            self.attribute_series_t3_list)
+        print("attribute_series_t3_text generated")
 
     def convert_list_to_str(self, desc_list):
         desc_str = ""
@@ -124,8 +123,14 @@ class DescGenerator():
         class_texts_with_desc = []
         for idx in range(200):
             attribute_series_index = attribute_series_tk_text[idx]
-            class_str = self.class_names.iloc[idx][1].split(".")[
-                1].replace("_", " ")
+            if(not filter):
+                class_str = self.class_names[int(idx), 1].split(".")[
+                    1].replace("_", " ")
+
+            if(filter):
+                class_str = self.class_names.loc[idx, 1].split(".")[
+                    1].replace("_", " ")
+
             class_text = "This is a Photo of a " + str(class_str)
             class_texts.append(class_text)
             desc_text = []
@@ -139,8 +144,8 @@ class DescGenerator():
                 attribute_text = "It " + part[0] + " " + color + " " + part[1]
                 desc_text.append(attribute_text)
             desc_text = self.convert_list_to_str(desc_text)
-            print(desc_text)
             class_texts_with_desc.append(desc_text)
+            print(desc_text)
         torch.save(class_texts, os.path.join(save_root, "just_class_names.pt"))
         torch.save(class_texts_with_desc, os.path.join(save_root, save_str))
 
@@ -149,14 +154,17 @@ def main():
     descgenerator = DescGenerator()
     descgenerator.process()
     descgenerator.get_class_text()
+
     descgenerator.make_sentences(
-        descgenerator.attribute_series_t15_text, save_str="t15_text.pt")
-    descgenerator.make_sentences(
-        descgenerator.attribute_series_t5_text, save_str="t5_text.pt")
+        descgenerator.attribute_series_t1_text, save_str="t1_text.pt")
+
     descgenerator.make_sentences(
         descgenerator.attribute_series_t3_text, save_str="t3_text.pt")
     descgenerator.make_sentences(
-        descgenerator.attribute_series_t1_text, save_str="t1_text.pt")
+        descgenerator.attribute_series_t5_text, save_str="t5_text.pt")
+
+    # descgenerator.make_sentences(
+    #    descgenerator.attribute_series_t15_text, save_str="t15_text.pt")
 
 
 if __name__ == "__main__":
