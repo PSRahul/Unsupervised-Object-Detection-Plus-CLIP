@@ -49,9 +49,17 @@ class GetSimilarity():
             f1_score(self.targets, self.predictions, average="macro") * 100))
 
 
-text_feature_path = "/home/psrahul/MasterThesis/repo/Unsupervised-Object-Detection-Plus-CLIP/utils/data_utils/CUB_200_2011/text_features/" + "text_feature_t1_text.pt"
+text_feature_path = "//home/psrahul/MasterThesis/repo/Unsupervised-Object-Detection-Plus-CLIP/utils/data_utils/CUB_200_2011/text_features_v2/" + \
+    "text_feature_just_class_names.pt"
+#   "text_feature_just_class_names.pt"
+# "text_feature_t5_text.pt"
+# "text_feature_t3_text.pt"
+# "text_feature_t1_text.pt"
 
-image_feature_path = "/home/psrahul/MasterThesis/repo/Unsupervised-Object-Detection-Plus-CLIP/utils/data_utils/CUB_200_2011/image_features/" + "image_feature_cropped.pt"
+image_feature_path = "/home/psrahul/MasterThesis/repo/Unsupervised-Object-Detection-Plus-CLIP/utils/data_utils/CUB_200_2011/image_features/" + \
+    "image_feature_cropped.pt"
+# "image_feature_full.pt"
+# "image_feature_cropped.pt"
 
 get_similarity = GetSimilarity(text_feature_path=text_feature_path,
                                image_feature_path=image_feature_path)
