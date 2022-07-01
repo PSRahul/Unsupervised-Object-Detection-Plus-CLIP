@@ -136,3 +136,4 @@ utils/data_utils/CUB_200_2011/image_features/image_feature_cropped.pt
 utils/data_utils/CUB_200_2011/image_features/image_feature_full.pt
 utils/data_utils/CUB_200_2011/image_features/processed_images_cropped.pt
 utils/data_utils/CUB_200_2011/image_features/processed_images.pt
+utils/data_utils/PASCAL VOC 2007/image_features/test_features.pt
