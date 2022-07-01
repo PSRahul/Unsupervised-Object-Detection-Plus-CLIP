@@ -1,3 +1,4 @@
+from cmath import sin
 from email.mime import image
 from operator import index
 import sys
@@ -25,7 +26,7 @@ class CreateSubsetCSV:
 
 
 class GenerateTxtFiles:
-    def __init__(self, class_names, split):
+    def __init__(self, class_names, split, single_object=True):
 
         self.split = split
         self.root_csv_dir = (
@@ -47,10 +48,12 @@ class GenerateTxtFiles:
 
         self.file_index = 1
 
+        self.single_object = single_object
+
     def copy_image(self, source, target):
         shutil.copy2(source, target)
 
-    def generate_images_txt(self, copy_images=True, single_object=True):
+    def generate_images_txt(self, copy_images=True):
 
         self.images_txt = []
         self.bounding_box_txt = []
@@ -63,11 +66,12 @@ class GenerateTxtFiles:
                 os.path.join(self.root_csv_dir, self.split + "_" + class_name + ".csv")
             )
 
-            print(len(pascal_csv))
-            if single_object == True:
+            print(pascal_csv.head(n=25))
+            if self.single_object == True:
                 pascal_csv.drop_duplicates(subset="fname", keep=False, inplace=True)
+                pascal_csv.reset_index(inplace=True)
 
-            print(len(pascal_csv))
+            print(pascal_csv.head(n=25))
 
             for i in tqdm(range(len(pascal_csv))):
                 bounding_box_row_list = [
