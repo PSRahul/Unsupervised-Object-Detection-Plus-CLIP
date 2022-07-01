@@ -69,7 +69,7 @@ def text_image_similarity():
 
 def image_image_similarity():
     support_feature_path = "/home/psrahul/MasterThesis/repo/Unsupervised-Object-Detection-Plus-CLIP/utils/data_utils/CUB_200_2011/image_features/support_image_features/" + \
-        "support_features_k_1"
+        "support_features_k_3"
 
     query_feature_path = "/home/psrahul/MasterThesis/repo/Unsupervised-Object-Detection-Plus-CLIP/utils/data_utils/CUB_200_2011/image_features/test_image_features/" + \
         "image_feature_full.pt"
