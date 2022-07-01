@@ -33,6 +33,7 @@ class GetSimilarity:
         )
         top_probs, top_labels = support_probs.cpu().topk(1, dim=-1)
         self.predictions = top_labels.numpy().ravel()
+        self.predictions += 1
 
     def get_targets(self):
 
@@ -50,6 +51,9 @@ class GetSimilarity:
     def get_metrics(self):
         self.get_predictions()
         self.get_targets()
+
+        print(np.unique(self.targets))
+        print(np.unique(self.predictions))
         print(
             "Accuracy {0:.2f}".format(
                 accuracy_score(self.targets, self.predictions) * 100
@@ -78,7 +82,7 @@ def text_image_similarity(
 def image_image_similarity():
     support_feature_path = (
         "/home/psrahul/MasterThesis/repo/Unsupervised-Object-Detection-Plus-CLIP/utils/data_utils/CUB_200_2011/image_features/support_image_features/"
-        + "support_features_k_3"
+        + "support_features_k_7"
     )
 
     query_feature_path = (
@@ -99,10 +103,10 @@ def image_image_similarity():
 
 def main():
 
-    """
-    image_image_similarity()
+    # image_image_similarity()
+
     support_feature_path = (
-        "//home/psrahul/MasterThesis/repo/Unsupervised-Object-Detection-Plus-CLIP/utils/data_utils/CUB_200_2011/text_features_v2/"
+        "//home/psrahul/MasterThesis/repo/Unsupervised-Object-Detection-Plus-CLIP/utils/data_utils/CUB_200_2011/text_features_v1/"
         + "text_feature_just_class_names.pt"
     )
     #   "text_feature_just_class_names.pt"
@@ -111,7 +115,7 @@ def main():
     # "text_feature_t1_text.pt"
 
     query_feature_path = (
-        "/home/psrahul/MasterThesis/repo/Unsupervised-Object-Detection-Plus-CLIP/utils/data_utils/CUB_200_2011/image_features/"
+        "/home/psrahul/MasterThesis/repo/Unsupervised-Object-Detection-Plus-CLIP/utils/data_utils/CUB_200_2011/image_features/test_image_features/"
         + "image_feature_cropped.pt"
     )
     # "query_feature_full.pt"
@@ -119,12 +123,19 @@ def main():
 
     target_image_labels_txt = "/home/psrahul/MasterThesis/repo/Unsupervised-Object-Detection-Plus-CLIP/utils/data_utils/CUB_200_2011/data_splits/test/image_class_labels.txt"
 
+    text_image_similarity(
+        query_feature_path=query_feature_path,
+        support_feature_path=support_feature_path,
+        target_image_labels_txt=target_image_labels_txt,
+    )
+
     """
     text_image_similarity(
         query_feature_path="/home/psrahul/MasterThesis/repo/Unsupervised-Object-Detection-Plus-CLIP/utils/data_utils/PASCAL VOC 2007/image_features/test_features.pt",
         support_feature_path="/home/psrahul/MasterThesis/repo/Unsupervised-Object-Detection-Plus-CLIP/utils/data_utils/PASCAL VOC 2007/text_embeddings/just_class_names_features.pt",
         target_image_labels_txt="/home/psrahul/MasterThesis/datasets/PASCAL_VOC2007/Reformatted_Single_Object/test/image_class_labels.txt",
     )
+    """
 
 
 if __name__ == "__main__":
