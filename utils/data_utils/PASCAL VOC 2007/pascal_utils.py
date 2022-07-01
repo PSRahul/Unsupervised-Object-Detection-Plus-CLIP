@@ -1,5 +1,6 @@
 # Source : https://github.com/mprat/pascal-voc-python/blob/master/voc_utils/voc_utils.py
 
+
 import pandas as pd
 import os
 from bs4 import BeautifulSoup
@@ -10,55 +11,10 @@ import skimage
 from skimage import io
 
 
-class PascalUtils:
-    def __init__(self, root_dir):
-        self.img_dir = os.path.join(root_dir, "JPEGImages/")
-        self.ann_dir = os.path.join(root_dir, "Annotations")
-        self.set_dir = os.path.join(root_dir, "ImageSets", "Main")
-
-        self.define_pascal_classes()
-
-    def define_pascal_classes(self):
-
-        self.class_names = [
-            "aeroplane",
-            "bicycle",
-            "bird",
-            "boat",
-            "bottle",
-            "bus",
-            "car",
-            "cat",
-            "chair",
-            "cow",
-            "diningtable",
-            "dog",
-            "horse",
-            "motorbike",
-            "person",
-            "pottedplant",
-            "sheep",
-            "sofa",
-            "train",
-            "tvmonitor",
-        ]
-
-    def imgs_from_category(self, cat_name, dataset):
-        """
-        Summary
-
-        Args:
-            cat_name (string): Category name as a string (from list_image_sets())
-            dataset (string): "train", "val", "train_val", or "test" (if available)
-
-        Returns:
-            pandas dataframe: pandas DataFrame of all filenames from that category
-        """
-        filename = os.path.join(self.set_dir, cat_name + "_" + dataset + ".txt")
-        df = pd.read_csv(
-            filename, delim_whitespace=True, header=None, names=["filename", "true"]
-        )
-        return df
+root_dir = "/home/psrahul/MasterThesis/datasets/PASCAL_VOC2007/VOCdevkit/VOC2007/"
+img_dir = os.path.join(root_dir, "JPEGImages/")
+ann_dir = os.path.join(root_dir, "Annotations")
+set_dir = os.path.join(root_dir, "ImageSets", "Main")
 
 
 def list_image_sets():
@@ -66,7 +22,6 @@ def list_image_sets():
     List all the image sets from Pascal VOC. Don't bother computing
     this on the fly, just remember it. It's faster.
     """
-
     return [
         "aeroplane",
         "bicycle",
@@ -137,7 +92,9 @@ def annotation_file_from_img(img_name):
     Returns:
         string: file path to the annotation file
     """
-    return os.path.join(ann_dir, img_name) + ".xml"
+    # print(ann_dir)
+    # print(str("{:06d}".format(img_name)))
+    return os.path.join(ann_dir, str("{:06d}".format(img_name))) + ".xml"
 
 
 def load_annotation(img_filename):
@@ -156,7 +113,7 @@ def load_annotation(img_filename):
     with open(annotation_file_from_img(img_filename)) as f:
         xml = f.readlines()
     xml = "".join([line.strip("\t") for line in xml])
-    return BeautifulSoup(xml)
+    return BeautifulSoup(xml, features="html.parser")
 
 
 # TODO: implement this

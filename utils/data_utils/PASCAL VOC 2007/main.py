@@ -1,18 +1,19 @@
 import sys
-from pascal_utils import PascalUtils
+from pascal_utils import _load_data, list_image_sets
+from tqdm import tqdm
 
 
-class CreateSubsetFeature:
+class CreateSubsetCSV:
     def __init__(self):
-        self.pascal_utils = PascalUtils(
-            root_dir="/home/psrahul/MasterThesis/datasets/PASCAL_VOC2007/VOCdevkit/VOC2007/"
-        )
+        self.class_names = list_image_sets()
+        self.splits = ["train", "val", "test"]
+        self.process()
 
     def process(self):
-        print(self.pascal_utils.class_names)
-
-    def get_class_df(self):
-        pass
+        for class_name in tqdm(self.class_names):
+            print(class_name)
+            for split in self.splits:
+                _load_data(class_name, split)
 
 
 class CreateSupportImagesCropped:
@@ -24,8 +25,8 @@ class CreateSupportImagesCropped:
 
 
 def main():
-    create_subset_feature = CreateSubsetFeature()
-    create_subset_feature.process()
+    # Create Class Level Splits CSV
+    #create_subset_csv = CreateSubsetCSV()
 
 
 if __name__ == "__main__":
