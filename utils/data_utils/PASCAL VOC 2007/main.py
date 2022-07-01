@@ -32,12 +32,13 @@ class GenerateTxtFiles:
             "/home/psrahul/MasterThesis/datasets/PASCAL_VOC2007/VOCdevkit/VOC2007/csvs/"
         )
         self.save_csv_root = os.path.join(
-            "/home/psrahul/MasterThesis/datasets/PASCAL_VOC2007/Reformatted/", split
+            "/home/psrahul/MasterThesis/datasets/PASCAL_VOC2007/Reformatted_Single_Object/",
+            split,
         )
         self.load_image_path = "/home/psrahul/MasterThesis/datasets/PASCAL_VOC2007/VOCdevkit/VOC2007/JPEGImages/"
 
         self.save_image_path = os.path.join(
-            "/home/psrahul/MasterThesis/datasets/PASCAL_VOC2007/Reformatted/",
+            "/home/psrahul/MasterThesis/datasets/PASCAL_VOC2007/Reformatted_Single_Object/",
             split,
             "images",
         )
@@ -49,7 +50,7 @@ class GenerateTxtFiles:
     def copy_image(self, source, target):
         shutil.copy2(source, target)
 
-    def generate_images_txt(self, copy_images=True):
+    def generate_images_txt(self, copy_images=True, single_object=True):
 
         self.images_txt = []
         self.bounding_box_txt = []
@@ -57,9 +58,17 @@ class GenerateTxtFiles:
 
         for class_idx, class_name in tqdm(enumerate(self.class_names, 1)):
             print(class_name)
+
             pascal_csv = pd.read_csv(
                 os.path.join(self.root_csv_dir, self.split + "_" + class_name + ".csv")
             )
+
+            print(len(pascal_csv))
+            if single_object == True:
+                pascal_csv.drop_duplicates(subset="fname", keep=False, inplace=True)
+
+            print(len(pascal_csv))
+
             for i in tqdm(range(len(pascal_csv))):
                 bounding_box_row_list = [
                     self.file_index,
