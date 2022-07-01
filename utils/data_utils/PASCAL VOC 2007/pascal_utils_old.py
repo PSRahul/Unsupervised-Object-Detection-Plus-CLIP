@@ -21,6 +21,7 @@ def list_image_sets():
     List all the image sets from Pascal VOC. Don't bother computing
     this on the fly, just remember it. It's faster.
     """
+
     return [
         "aeroplane",
         "bicycle",
