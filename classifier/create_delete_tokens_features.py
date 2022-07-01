@@ -165,6 +165,7 @@ def call_get_text_token_from_desc_list():
 
 def main():
     create_token_features = CreateTokenFeatures()
+    """
     create_token_features.create_image_features_from_classes_folders(
         images_path="/home/psrahul/MasterThesis/datasets/PASCAL_VOC2007/Reformatted_Single_Object/test/images/",
         images_list="/home/psrahul/MasterThesis/datasets/PASCAL_VOC2007/Reformatted_Single_Object/test/images.txt",
@@ -172,7 +173,21 @@ def main():
         save_name="test_features.pt",
         crop_bounding_box=False,
     )
+    
+    create_token_features.get_text_token_from_desc_list(
+        load_name="just_class_names.pt",
+        save_name="just_class_names.pt",
+        load_file_root="/home/psrahul/MasterThesis/repo/Unsupervised-Object-Detection-Plus-CLIP/utils/data_utils/PASCAL VOC 2007/text_tokens/",
+        save_file_root="/home/psrahul/MasterThesis/repo/Unsupervised-Object-Detection-Plus-CLIP/utils/data_utils/PASCAL VOC 2007/text_embeddings/",
+    )
     pass
+    
+    create_token_features.get_text_features(
+        load_name="just_class_names.pt",
+        save_name="just_class_names_features.pt",
+        file_root="/home/psrahul/MasterThesis/repo/Unsupervised-Object-Detection-Plus-CLIP/utils/data_utils/PASCAL VOC 2007/text_embeddings/",
+    )
+    """
 
 
 if __name__ == "__main__":

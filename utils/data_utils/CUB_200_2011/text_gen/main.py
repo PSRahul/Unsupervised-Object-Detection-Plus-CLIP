@@ -7,22 +7,24 @@ import os
 import sys
 
 
-class DescGenerator():
+class DescGenerator:
     def __init__(self, filter=True) -> None:
 
-        attribute_definitions = "/home/psrahul/MasterThesis/datasets/CUB_200_2011/attributes.txt"
+        attribute_definitions = (
+            "/home/psrahul/MasterThesis/datasets/CUB_200_2011/attributes.txt"
+        )
         attribute_certainities = "/home/psrahul/MasterThesis/datasets/CUB_200_2011/CUB_200_2011/attributes/certainties.txt"
         image_attributes = "/home/psrahul/MasterThesis/datasets/CUB_200_2011/CUB_200_2011/attributes/image_attribute_labels.txt"
 
-        class_names = "/home/psrahul/MasterThesis/datasets/CUB_200_2011/CUB_200_2011/classes.txt"
+        class_names = (
+            "/home/psrahul/MasterThesis/datasets/CUB_200_2011/CUB_200_2011/classes.txt"
+        )
 
         class_attribute_labels = "/home/psrahul/MasterThesis/datasets/CUB_200_2011/CUB_200_2011/attributes/class_attribute_labels_continuous.txt"
 
-        self.attributes = pd.read_csv(attribute_definitions,
-                                      sep=" ", header=None)
+        self.attributes = pd.read_csv(attribute_definitions, sep=" ", header=None)
 
-        self.class_names = pd.read_csv(class_names,
-                                       sep=" ", header=None)
+        self.class_names = pd.read_csv(class_names, sep=" ", header=None)
         # self.certainities = pd.read_csv(
         #    attribute_certainities, sep=" ", header=None)
 
@@ -30,7 +32,8 @@ class DescGenerator():
         #    image_attributes, sep=" ", header=None)
 
         self.class_attribute_labels = pd.read_csv(
-            class_attribute_labels, sep=" ", header=None)
+            class_attribute_labels, sep=" ", header=None
+        )
 
         self.filter = filter
 
@@ -44,39 +47,35 @@ class DescGenerator():
         # Leg Color - 263 - 278
         # Bill Color - 278 - 293
 
-        keep_filters.append([int(x)
-                             for x in np.arange(9, 24)])
-        keep_filters.append([int(x)
-                             for x in np.arange(135, 149)])
-        keep_filters.append([int(x)
-                             for x in np.arange(248, 293)])
+        keep_filters.append([int(x) for x in np.arange(9, 24)])
+        keep_filters.append([int(x) for x in np.arange(135, 149)])
+        keep_filters.append([int(x) for x in np.arange(248, 293)])
         keep_filters = [x for xs in keep_filters for x in xs]
 
         self.class_attribute_labels = self.class_attribute_labels.iloc[:, keep_filters]
         self.attributes = self.attributes.iloc[keep_filters, :]
 
     def process(self):
-        if(self.filter):
+        if self.filter:
             self.filter_attributes()
         self.attribute_series_t15_list = []
         self.attribute_series_t5_list = []
         self.attribute_series_t3_list = []
         self.attribute_series_t1_list = []
         for idx in range(200):
-            class_series = self.class_attribute_labels.iloc[idx].sort_values(
-                ascending=False).keys()
+            class_series = (
+                self.class_attribute_labels.iloc[idx]
+                .sort_values(ascending=False)
+                .keys()
+            )
             attribute_series_t15 = class_series[0:15]
             attribute_series_t5 = class_series[0:5]
             attribute_series_t3 = class_series[0:3]
             attribute_series_t1 = class_series[0]
-            self.attribute_series_t15_list.append(
-                np.array(attribute_series_t15))
-            self.attribute_series_t5_list.append(
-                np.array(attribute_series_t5))
-            self.attribute_series_t3_list.append(
-                np.array(attribute_series_t3))
-            self.attribute_series_t1_list.append(
-                np.array(attribute_series_t1))
+            self.attribute_series_t15_list.append(np.array(attribute_series_t15))
+            self.attribute_series_t5_list.append(np.array(attribute_series_t5))
+            self.attribute_series_t3_list.append(np.array(attribute_series_t3))
+            self.attribute_series_t1_list.append(np.array(attribute_series_t1))
 
     def __repr__(self):
         print(self.attribute_series_t5_list)
@@ -100,16 +99,20 @@ class DescGenerator():
     def get_class_text(self):
 
         self.attribute_series_t1_text = self.get_index_class_list(
-            self.attribute_series_t1_list)
+            self.attribute_series_t1_list
+        )
         print("attribute_series_t1_text generated")
         self.attribute_series_t15_text = self.get_index_class_list(
-            self.attribute_series_t15_list)
+            self.attribute_series_t15_list
+        )
         print("attribute_series_t15_text generated")
         self.attribute_series_t5_text = self.get_index_class_list(
-            self.attribute_series_t5_list)
+            self.attribute_series_t5_list
+        )
         print("attribute_series_t5_text generated")
         self.attribute_series_t3_text = self.get_index_class_list(
-            self.attribute_series_t3_list)
+            self.attribute_series_t3_list
+        )
         print("attribute_series_t3_text generated")
 
     def convert_list_to_str(self, desc_list):
@@ -118,18 +121,24 @@ class DescGenerator():
             desc_str += str(each_str) + ". "
         return desc_str
 
-    def make_sentences(self, attribute_series_tk_text, save_str, save_root="/home/psrahul/MasterThesis/repo/Unsupervised-Object-Detection-Plus-CLIP/utils/data_utils/CUB_200_2011/text_gen/text_tokens_v2/", filter=True):
+    def make_sentences(
+        self,
+        attribute_series_tk_text,
+        save_str,
+        save_root="/home/psrahul/MasterThesis/repo/Unsupervised-Object-Detection-Plus-CLIP/utils/data_utils/CUB_200_2011/text_gen/text_tokens_v2/",
+        filter=True,
+    ):
         class_texts = []
         class_texts_with_desc = []
         for idx in range(200):
             attribute_series_index = attribute_series_tk_text[idx]
-            if(not filter):
-                class_str = self.class_names[int(idx), 1].split(".")[
-                    1].replace("_", " ")
+            if not filter:
+                class_str = (
+                    self.class_names[int(idx), 1].split(".")[1].replace("_", " ")
+                )
 
-            if(filter):
-                class_str = self.class_names.loc[idx, 1].split(".")[
-                    1].replace("_", " ")
+            if filter:
+                class_str = self.class_names.loc[idx, 1].split(".")[1].replace("_", " ")
 
             class_text = "This is a Photo of a " + str(class_str)
             class_texts.append(class_text)
@@ -137,7 +146,7 @@ class DescGenerator():
             desc_text.append(class_text)
             for attribute in attribute_series_index:
                 # ['has_eye_color', 'black']
-                part, color = (attribute.split("::", 2))
+                part, color = attribute.split("::", 2)
                 color = color.replace("_", " ")
                 part = part.replace("_", " ")  # has underparts color
                 part = part.split(" ", 1)
@@ -157,12 +166,15 @@ def main():
     descgenerator.get_class_text()
 
     descgenerator.make_sentences(
-        descgenerator.attribute_series_t1_text, save_str="t1_text.pt")
+        descgenerator.attribute_series_t1_text, save_str="t1_text.pt"
+    )
 
     descgenerator.make_sentences(
-        descgenerator.attribute_series_t3_text, save_str="t3_text.pt")
+        descgenerator.attribute_series_t3_text, save_str="t3_text.pt"
+    )
     descgenerator.make_sentences(
-        descgenerator.attribute_series_t5_text, save_str="t5_text.pt")
+        descgenerator.attribute_series_t5_text, save_str="t5_text.pt"
+    )
 
     # descgenerator.make_sentences(
     #    descgenerator.attribute_series_t15_text, save_str="t15_text.pt")
