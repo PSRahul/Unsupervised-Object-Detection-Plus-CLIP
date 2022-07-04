@@ -38,11 +38,11 @@ class SelectSupports:
 
 def main():
 
-    save_folder = "/home/psrahul/MasterThesis/repo/Unsupervised-Object-Detection-Plus-CLIP/utils/data_utils/CUB_200_2011/image_features/support_image_features/support_features_k_"
+    save_folder = "/home/psrahul/MasterThesis/repo/Unsupervised-Object-Detection-Plus-CLIP/utils/data_utils/CUB_200_2011/image_features/support_image_features/v2_split/support_features_k_"
 
     select_supports = SelectSupports(
-        feature_pt_path="/home/psrahul/MasterThesis/repo/Unsupervised-Object-Detection-Plus-CLIP/utils/data_utils/CUB_200_2011/image_features/support_image_features/image_features_support_images.pt",
-        image_class_label_txt="/home/psrahul/MasterThesis/datasets/CUB_200_2011/CUB_200_2011/train/CUB_200_2011/image_class_labels.txt",
+        feature_pt_path="/home/psrahul/MasterThesis/repo/Unsupervised-Object-Detection-Plus-CLIP/utils/data_utils/CUB_200_2011/image_features/support_image_features/v2_split/image_features_support_images.pt",
+        image_class_label_txt="/home/psrahul/MasterThesis/datasets/CUB_200_2011/v2/CUB_200_2011/train/image_class_labels.txt",
     )
 
     with tqdm(total=10 * 200) as pbar:

@@ -45,7 +45,7 @@ class CreateTokenFeatures:
         image_features = torch.zeros((len(file_Lines), 512))
 
         for i, file_line in enumerate(tqdm(file_Lines)):
-            time.sleep(0.1)
+            time.sleep(0.01)
             file_line = file_line.strip()
             idx, file_name = file_line.split(" ")
             image = Image.open(os.path.join(images_path, file_name)).convert("RGB")
@@ -165,15 +165,16 @@ def call_get_text_token_from_desc_list():
 
 def main():
     create_token_features = CreateTokenFeatures()
-    """
+
     create_token_features.create_image_features_from_classes_folders(
-        images_path="/home/psrahul/MasterThesis/datasets/PASCAL_VOC2007/Reformatted_Single_Object/test/images/",
-        images_list="/home/psrahul/MasterThesis/datasets/PASCAL_VOC2007/Reformatted_Single_Object/test/images.txt",
-        save_folder="/home/psrahul/MasterThesis/repo/Unsupervised-Object-Detection-Plus-CLIP/utils/data_utils/PASCAL VOC 2007/image_features/",
-        save_name="test_features.pt",
+        images_path="/home/psrahul/MasterThesis/datasets/CUB_200_2011/v2/CUB_200_2011/train/images/",
+        images_list="/home/psrahul/MasterThesis/datasets/CUB_200_2011/v2/CUB_200_2011/train/images.txt",
+        save_folder="/home/psrahul/MasterThesis/repo/Unsupervised-Object-Detection-Plus-CLIP/utils/data_utils/CUB_200_2011/image_features/support_image_features/v2_split/",
+        save_name="image_features_support_images.pt",
         crop_bounding_box=False,
     )
-    
+
+    """
     create_token_features.get_text_token_from_desc_list(
         load_name="just_class_names.pt",
         save_name="just_class_names.pt",
