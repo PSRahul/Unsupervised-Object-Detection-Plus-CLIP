@@ -7,11 +7,7 @@ import torch
 import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.metrics import (
-    confusion_matrix,
-    ConfusionMatrixDisplay,
-    multilabel_confusion_matrix,
     accuracy_score,
-    balanced_accuracy_score,
     f1_score,
 )
 
