@@ -1,6 +1,7 @@
 from posixpath import split
 import sys
 from tqdm import tqdm
+import os
 
 
 class RemoveOverlapImages:
@@ -9,6 +10,10 @@ class RemoveOverlapImages:
         self.remove_images_path = "//home/psrahul/MasterThesis/repo/Unsupervised-Object-Detection-Plus-CLIP/utils/data_utils/CUB_200_2011/data_splits/v2/cub_imagenet_overlap.txt"
 
         self.target_images_path = "/home/psrahul/MasterThesis/repo/Unsupervised-Object-Detection-Plus-CLIP/utils/data_utils/CUB_200_2011/data_splits/v2/filtered_images.txt"
+
+        self.image_root = (
+            "/home/psrahul/MasterThesis/datasets/CUB_200_2011/v2/CUB_200_2011/images/"
+        )
 
         self.source_images = open(self.source_images_path, "r")
         self.source_images = self.source_images.readlines()
@@ -20,14 +25,22 @@ class RemoveOverlapImages:
         with open(self.target_images_path, "w") as self.target_images:
             for source_image in tqdm(self.source_images):
                 flag = 0
+
                 split_source_image = source_image.split("/")[1].strip()
+
                 print(split_source_image)
                 for remove_image in self.remove_images:
                     split_remove_image = remove_image.split(",")[0].strip()
                     if str(split_remove_image) == str(split_source_image):
                         flag = 1
+                        image_name = source_image.split(" ")[1].strip()
+                        image_path = os.path.join(self.image_root, image_name)
+                        print(os.remove(os.path.join(image_name, image_path)))
+
                 if flag == 0:
                     self.target_images.write(source_image)
+
+                    #
 
 
 def main():
