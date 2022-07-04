@@ -52,8 +52,6 @@ class GetSimilarity:
         self.get_predictions()
         self.get_targets()
 
-        print(np.unique(self.targets))
-        print(np.unique(self.predictions))
         print(
             "Accuracy {0:.2f}".format(
                 accuracy_score(self.targets, self.predictions) * 100
