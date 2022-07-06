@@ -52,7 +52,7 @@ class GetSimilarity:
             "Accuracy {0:.2f}".format(
                 accuracy_score(self.targets, self.predictions) * 100
             )
-        )
+        )r
         print(
             "F1 Score {0:.2f}".format(
                 f1_score(self.targets, self.predictions, average="macro") * 100

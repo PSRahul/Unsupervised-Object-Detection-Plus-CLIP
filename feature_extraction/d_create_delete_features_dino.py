@@ -17,24 +17,6 @@ import torchvision.transforms as transforms
 from transformers import ViTFeatureExtractor, ViTModel
 
 
-class DINOExtractor_ResNet:
-    def __init__(self):
-        self.preprocess = transforms.Compose(
-            [
-                transforms.Resize(256, interpolation=3),
-                transforms.CenterCrop(224),
-                transforms.ToTensor(),
-                transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225)),
-            ]
-        )
-
-        self.model = torch.hub.load("facebookresearch/dino:main", "dino_resnet50")
-        self.model = self.model.cuda()
-
-    def get_features(self, image):
-        image = torch.tensor(self.preprocess(image)).detach().unsqueeze(0).cuda()
-        image_feat = self.model(image).float()
-        return image_feat
 
 
 class DINOExtractor_ViT:
