@@ -108,7 +108,7 @@ class CreateImageFeatures:
             crop_bounding_box,
             model_name,
         )
-        self.save_feature(save_folder, save_name)
+        # self.save_feature(save_folder, save_name)
 
     @torch.no_grad()
     def create_image_features_from_classes_folders(
@@ -165,10 +165,10 @@ class CreateImageFeatures:
 
 def main():
     images_path = (
-        "/home/psrahul/MasterThesis/datasets/CUB_200_2011/v2/CUB_200_2011/train/images/"
+        "/home/psrahul/MasterThesis/datasets/CUB_200_2011/v2/CUB_200_2011/test/images/"
     )
-    images_list = "/home/psrahul/MasterThesis/datasets/CUB_200_2011/v2/CUB_200_2011/train/images.txt"
-    save_root = "/home/psrahul/MasterThesis/repo/Unsupervised-Object-Detection-Plus-CLIP/features/images/support/"
+    images_list = "/home/psrahul/MasterThesis/datasets/CUB_200_2011/v2/CUB_200_2011/test/images.txt"
+    save_root = "/home/psrahul/MasterThesis/repo/Unsupervised-Object-Detection-Plus-CLIP/features/images/query/"
     save_name = "image_features_support.pt"
     crop_bounding_box = False
     model_name = [
