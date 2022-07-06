@@ -27,21 +27,21 @@ class SelectSupports:
             self.image_class_labels[1] == class_number + 1, 1
         ]
         image_index = list(image_class_specifics.keys())
-        class_support_list = torch.zeros((num_supports, 512))
+        class_support_list = torch.zeros((num_supports, 2048))
         image_index = np.random.permutation(image_index)
         image_index = image_index[0:num_supports]
 
         class_support_list = self.full_image_features[image_index, :]
-        class_support_list = torch.mean(class_support_list, dim=0).reshape(1, 512)
+        class_support_list = torch.mean(class_support_list, dim=0).reshape(1, 2048)
         return class_support_list
 
 
 def main():
 
-    save_folder = "/home/psrahul/MasterThesis/repo/Unsupervised-Object-Detection-Plus-CLIP/utils/data_utils/CUB_200_2011/image_features/support_image_features/v2_split/support_features_k_"
+    save_folder = "/home/psrahul/MasterThesis/repo/Unsupervised-Object-Detection-Plus-CLIP/utils/data_utils/CUB_200_2011/image_features/support_image_features/v2_split/dino/support_features_k_"
 
     select_supports = SelectSupports(
-        feature_pt_path="/home/psrahul/MasterThesis/repo/Unsupervised-Object-Detection-Plus-CLIP/utils/data_utils/CUB_200_2011/image_features/support_image_features/v2_split/image_features_support_images.pt",
+        feature_pt_path="/home/psrahul/MasterThesis/repo/Unsupervised-Object-Detection-Plus-CLIP/utils/data_utils/CUB_200_2011/image_features/support_image_features/v2_split/dino/image_features_support_images.pt",
         image_class_label_txt="/home/psrahul/MasterThesis/datasets/CUB_200_2011/v2/CUB_200_2011/train/image_class_labels.txt",
     )
 
@@ -49,7 +49,7 @@ def main():
 
         for j in tqdm(range(1, 11)):
 
-            support_features = torch.zeros((200, 512))
+            support_features = torch.zeros((200, 2048))
             for i in tqdm(range(200)):
                 support_features[i] = select_supports.get_support_features(
                     class_number=i, num_supports=j

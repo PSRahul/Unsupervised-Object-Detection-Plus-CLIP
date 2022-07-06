@@ -75,12 +75,12 @@ def text_image_similarity(
 
 def image_image_similarity():
     support_feature_path = (
-        "/home/psrahul/MasterThesis/repo/Unsupervised-Object-Detection-Plus-CLIP/utils/data_utils/CUB_200_2011/image_features/support_image_features/v2_split/"
-        + "support_features_k_10"
+        "/home/psrahul/MasterThesis/repo/Unsupervised-Object-Detection-Plus-CLIP/utils/data_utils/CUB_200_2011/image_features/support_image_features/v2_split/dino/"
+        + "support_features_k_1"
     )
 
     query_feature_path = (
-        "/home/psrahul/MasterThesis/repo/Unsupervised-Object-Detection-Plus-CLIP/utils/data_utils/CUB_200_2011/image_features/test_image_features/v2_split/"
+        "/home/psrahul/MasterThesis/repo/Unsupervised-Object-Detection-Plus-CLIP/utils/data_utils/CUB_200_2011/image_features/test_image_features/v2_split/dino/"
         + "test_features_full.pt"
     )
 
