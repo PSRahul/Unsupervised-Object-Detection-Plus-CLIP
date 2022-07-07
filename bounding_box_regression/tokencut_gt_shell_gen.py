@@ -2,14 +2,14 @@ import subprocess
 import os
 
 image_root_path = (
-    "/home/psrahul/MasterThesis/datasets/CUB_200_2011/v2/CUB_200_2011/test/images/"
+    "/home/psrahul/MasterThesis/datasets/CUB_200_2011/v2/CUB_200_2011/train/images/"
 )
 
 image_list_path = (
-    "/home/psrahul/MasterThesis/datasets/CUB_200_2011/v2/CUB_200_2011/test/images.txt"
+    "/home/psrahul/MasterThesis/datasets/CUB_200_2011/v2/CUB_200_2011/train/images.txt"
 )
 
-bounding_box_output = "/home/psrahul/MasterThesis/repo/Unsupervised-Object-Detection-Plus-CLIP/bounding_box_regression/TokenCutOutputs/bounding_boxes_output_script.txt"
+bounding_box_output = "/home/psrahul/MasterThesis/repo/Unsupervised-Object-Detection-Plus-CLIP/bounding_box_regression/TokenCutOutputs/v05_support_script.txt"
 
 file = open(image_list_path, "r")
 file_Lines = file.readlines()
