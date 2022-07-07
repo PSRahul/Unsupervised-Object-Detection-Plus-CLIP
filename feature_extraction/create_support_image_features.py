@@ -45,7 +45,7 @@ class SelectSupports:
 
 def main():
 
-    save_folder = "/home/psrahul/MasterThesis/repo/Unsupervised-Object-Detection-Plus-CLIP/features/images/support/"
+    save_folder = "/home/psrahul/MasterThesis/repo/Unsupervised-Object-Detection-Plus-CLIP/features/images/support/v0.5"
 
     model_name = [
         ("CLIPModel", 512),
