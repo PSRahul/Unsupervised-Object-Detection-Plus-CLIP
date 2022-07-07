@@ -97,7 +97,8 @@ class CreateImageFeatures:
         self,
         images_path,
         images_list,
-        crop_bounding_box,
+        crop_tokencut_bbox,
+        crop_gt_bbox,
         model_name,
         save_folder,
         save_name,
@@ -105,18 +106,26 @@ class CreateImageFeatures:
         self.create_image_features_from_classes_folders(
             images_path,
             images_list,
-            crop_bounding_box,
+            crop_tokencut_bbox,
+            crop_gt_bbox,
             model_name,
         )
-        # self.save_feature(save_folder, save_name)
+        self.save_feature(save_folder, save_name)
 
     @torch.no_grad()
     def create_image_features_from_classes_folders(
-        self, images_path, images_list, crop_bounding_box, model_name
+        self, images_path, images_list, crop_tokencut_bbox, crop_gt_bbox, model_name
     ):
 
         file = open(images_list, "r")
         file_Lines = file.readlines()
+
+        if crop_gt_bbox:
+            bbox_file = open(
+                "/home/psrahul/MasterThesis/datasets/CUB_200_2011/v2/CUB_200_2011/train/bounding_boxes.txt",
+                "r",
+            )
+            bbox_file = bbox_file.readlines()
 
         if model_name == "CLIPModel":
             model = CLIPModel()
@@ -143,14 +152,26 @@ class CreateImageFeatures:
             idx, file_name = file_line.split(" ")
             image = Image.open(os.path.join(images_path, file_name)).convert("RGB")
 
-            if crop_bounding_box:
+            if crop_tokencut_bbox:
                 pred = np.load(
                     os.path.join(
-                        "/home/psrahul/MasterThesis/repo/Unsupervised-Object-Detection-Plus-CLIP/bounding_box_regression/outputs/TokenCut/CUB200/bounding_boxes/TokenCut-vit_small16_k",
+                        "/home/psrahul/MasterThesis/repo/Unsupervised-Object-Detection-Plus-CLIP/bounding_box_regression/TokenCutOutputs/bounding_boxes/TokenCut-vit_small16_k/",
                         str(file_name.split("/")[1].split(".")[0] + ".npy"),
                     )
                 )
                 # print(pred)
+                image = image.crop(pred)
+                # print(pred)
+            if crop_gt_bbox:
+                pred = bbox_file[i].split()
+                pred = [
+                    int(float(pred[1])),
+                    int(float(pred[2])),
+                    int(float(pred[1])) + int(float(pred[3])),
+                    int(float(pred[2])) + int(float(pred[4])),
+                ]
+                # print(pred)
+                # sys.exit(0)
                 image = image.crop(pred)
 
             with torch.no_grad():
@@ -165,12 +186,13 @@ class CreateImageFeatures:
 
 def main():
     images_path = (
-        "/home/psrahul/MasterThesis/datasets/CUB_200_2011/v2/CUB_200_2011/test/images/"
+        "/home/psrahul/MasterThesis/datasets/CUB_200_2011/v2/CUB_200_2011/train/images/"
     )
-    images_list = "/home/psrahul/MasterThesis/datasets/CUB_200_2011/v2/CUB_200_2011/test/images.txt"
-    save_root = "/home/psrahul/MasterThesis/repo/Unsupervised-Object-Detection-Plus-CLIP/features/images/query/"
+    images_list = "/home/psrahul/MasterThesis/datasets/CUB_200_2011/v2/CUB_200_2011/train/images.txt"
+    save_root = "/home/psrahul/MasterThesis/repo/Unsupervised-Object-Detection-Plus-CLIP/features/images/support/v0.5"
     save_name = "image_features_support.pt"
-    crop_bounding_box = False
+    crop_bbox_tokencut = False
+    crop_gt_bbox = True
     model_name = [
         "CLIPModel",
         "DINOExtractorResNet",
@@ -188,7 +210,8 @@ def main():
         _ = CreateImageFeatures(
             images_path,
             images_list,
-            crop_bounding_box,
+            crop_bbox_tokencut,
+            crop_gt_bbox,
             model,
             save_folder,
             save_name,
