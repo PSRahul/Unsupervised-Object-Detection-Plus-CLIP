@@ -60,12 +60,12 @@ class ImageImageSim:
 
         target_image_labels_txt = "/home/psrahul/MasterThesis/datasets/CUB_200_2011/v2/CUB_200_2011/test/image_class_labels.txt"
 
-        query_root = "/home/psrahul/MasterThesis/repo/Unsupervised-Object-Detection-Plus-CLIP/features/images/query/v0.7"
+        query_root = "/home/psrahul/MasterThesis/repo/Unsupervised-Object-Detection-Plus-CLIP/features/images/query/v0.8"
         query_feature_path = os.path.join(
             query_root, str(model_name), "image_features_query.pt"
         )
 
-        support_root = "/home/psrahul/MasterThesis/repo/Unsupervised-Object-Detection-Plus-CLIP/features/images/support/v0.7"
+        support_root = "/home/psrahul/MasterThesis/repo/Unsupervised-Object-Detection-Plus-CLIP/features/images/support/v0.8"
         support_feature_path = os.path.join(
             support_root, str(model_name), str(f"seed_{seed_number}")
         )
