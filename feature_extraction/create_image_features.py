@@ -186,13 +186,13 @@ class CreateImageFeatures:
 
 def main():
     images_path = (
-        "/home/psrahul/MasterThesis/datasets/CUB_200_2011/v2/CUB_200_2011/train/images/"
+        "/home/psrahul/MasterThesis/datasets/CUB_200_2011/v2/CUB_200_2011/test/images/"
     )
-    images_list = "/home/psrahul/MasterThesis/datasets/CUB_200_2011/v2/CUB_200_2011/train/images.txt"
-    save_root = "/home/psrahul/MasterThesis/repo/Unsupervised-Object-Detection-Plus-CLIP/features/images/support/v0.5"
-    save_name = "image_features_support.pt"
-    crop_bbox_tokencut = False
-    crop_gt_bbox = True
+    images_list = "/home/psrahul/MasterThesis/datasets/CUB_200_2011/v2/CUB_200_2011/test/images.txt"
+    save_root = "/home/psrahul/MasterThesis/repo/Unsupervised-Object-Detection-Plus-CLIP/features/images/query/v0.6"
+    save_name = "image_features_query.pt"
+    crop_bbox_tokencut = True
+    crop_gt_bbox = False
     model_name = [
         "CLIPModel",
         "DINOExtractorResNet",
